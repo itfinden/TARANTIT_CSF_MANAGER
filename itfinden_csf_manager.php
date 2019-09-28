@@ -15,7 +15,7 @@ define('JETCSFMANAGER', true);
 if(!defined('JCSF_ROOT_PATH'))  define('JCSF_ROOT_PATH', dirname(__FILE__));
 if(!defined('WHMCS_ROOT_PATH')) define('WHMCS_ROOT_PATH', realpath(JCSF_ROOT_PATH . '/../'));
 	
-function csfmanager_config() 
+function itfinden_csf_manager_config() 
 {
 	return array(
 		'name' 		=> 'Jetserver CSF Manager',
@@ -26,7 +26,7 @@ function csfmanager_config()
 	);
 }
 
-function csfmanager_activate() 
+function itfinden_csf_manager_activate() 
 {
 	$sql = "CREATE TABLE IF NOT EXISTS `mod_csfmanager_config` (
 			`name` varchar(255) NOT NULL,
@@ -87,7 +87,7 @@ function csfmanager_activate()
 	);
 }
 
-function csfmanager_deactivate() 
+function itfinden_csf_manager_deactivate() 
 {
 	mysql_query("DROP TABLE IF EXISTS `mod_csfmanager_config`");
 	mysql_query("DROP TABLE IF EXISTS `mod_csfmanager_allow`");
@@ -98,7 +98,7 @@ function csfmanager_deactivate()
 	);
 }
 
-function csfmanager_upgrade($vars) 
+function itfinden_csf_manager_upgrade($vars) 
 {
 	$version = $vars['version'];
 
@@ -142,7 +142,7 @@ function csfmanager_upgrade($vars)
 	}
 }
 
-function csfmanager_output($vars) 
+function itfinden_csf_manager_output($vars) 
 {
 	global $whmcs, $cc_encryption_hash, $LANG, $CONFIG, $_LANG;
 
@@ -292,7 +292,7 @@ function csfmanager_output($vars)
 	}
 }
 
-function csfmanager_clientarea($vars) 
+function itfinden_csf_manager_clientarea($vars) 
 {
 	global $whmcs, $CONFIG, $_LANG;
 		
