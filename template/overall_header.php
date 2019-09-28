@@ -1,4 +1,4 @@
-<?php if (!defined("JETCSFMANAGER")) die("This file cannot be accessed directly"); ?>
+<?php if (!defined("ITFINDEN_CSF_MANAGER")) die("This file cannot be accessed directly"); ?>
 <?php if($new_version) { ?>
 <div class="infobox">
 	<strong><span class="title">Information</span></strong>

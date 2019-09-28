@@ -1,15 +1,7 @@
 <?php
-/*
- *
- * JetCSFManager @ whmcs module package
- * Created By Idan Ben-Ezra
- *
- * Copyrights @ Jetserver Web Hosting
- * http://jetserver.net
- *
- **/
 
-if (!defined("JETCSFMANAGER"))
+
+if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
 class jcsf_allowedlog_default

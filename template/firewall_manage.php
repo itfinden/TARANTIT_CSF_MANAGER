@@ -1,4 +1,4 @@
-<?php if (!defined("JETCSFMANAGER")) die("This file cannot be accessed directly"); ?>
+<?php if (!defined("ITFINDEN_CSF_MANAGER")) die("This file cannot be accessed directly"); ?>
 <?php include_once(JCSF_ROOT_PATH . "/template/overall_header.php"); ?>
 
 <h2 style="position: absolute; top: 0; left: 0; background: #fff; margin: 10px 0; display: block; padding: 9px 19px; width: 100%;">

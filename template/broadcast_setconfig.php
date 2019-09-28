@@ -1,4 +1,4 @@
-<?php if (!defined("JETCSFMANAGER")) die("This file cannot be accessed directly"); ?>
+<?php if (!defined("ITFINDEN_CSF_MANAGER")) die("This file cannot be accessed directly"); ?>
 <?php include_once(JCSF_ROOT_PATH . "/template/overall_header.php"); ?>
 
 <h1><?php echo $instance->lang('changemulticonf'); ?></h1>
