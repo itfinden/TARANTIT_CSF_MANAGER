@@ -6,7 +6,7 @@ if (!defined("WHMCS"))
 
 
 
-require_once "/includes/sql_funct.php";
+require_once ("/includes/sql_funct.php");
 
 
 define('JETCSFMANAGER', true);
