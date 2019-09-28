@@ -28,13 +28,13 @@ class jcsf_settings_default
 			FROM tblservers
 			WHERE hostname != ''
 			ORDER BY hostname ASC";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 		
-		while($server_details = mysql_fetch_assoc($result))
+		while($server_details = mysqli_fetch_assoc($result))
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge(array('selected' => in_array($server_details['id'], explode(',', $instance->getConfig('servers'))) ? true : false), $server_details);
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		return $output;
 	}

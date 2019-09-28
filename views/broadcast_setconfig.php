@@ -40,13 +40,13 @@ class jcsf_broadcast_setconfig extends jcsf_broadcast_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 		
-		while($server_details = mysql_fetch_assoc($result))
+		while($server_details = mysqli_fetch_assoc($result))
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		$templateserver = csfmanager::request_var('templateserver', 0);
 

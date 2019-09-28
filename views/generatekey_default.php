@@ -28,13 +28,13 @@ class jcsf_generatekey_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 		
-		while($server_details = mysql_fetch_assoc($result))
+		while($server_details = mysqli_fetch_assoc($result))
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		
 		$output['data']['clients'] = array();
 		
@@ -51,13 +51,13 @@ class jcsf_generatekey_default
 			" . (trim($instance->getConfig('servers', '')) ? "AND s.id IN (" . trim($instance->getConfig('servers', '')) . ")" : '') . "
 			AND p.type IN ('hostingaccount','reselleraccount','server')
 			ORDER BY c.firstname ASC, c.lastname ASC, c.id ASC";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 		
-		while($client_details = mysql_fetch_assoc($result))
+		while($client_details = mysqli_fetch_assoc($result))
 		{                     
 			$output['data']['clients'][$client_details['id']] = $client_details;
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		
 		return $output;
 	}
@@ -100,7 +100,7 @@ class jcsf_generatekey_default
 	
 				$sql = "INSERT INTO mod_csfmanager_allow_keys (`user_id`,`server_id`,`product_id`,`key_hash`,`key_recipient`,`key_email`,`key_clicks_remained`,`key_expire`) VALUES
 					('{$client_id}','{$output['data']['clients'][$client_id]['server_id']}','{$output['data']['clients'][$client_id]['hosting_id']}','{$hashkey}','{$output['data']['generate']['recipient']}','{$output['data']['generate']['email']}',{$valid_clicks},'" . (time() + (60 * 60 * 24 * $valid_days)) . "')";
-				mysql_query($sql);
+				mysqli_query($sql);
 	
 				$output['success'] = true;
 				$output['message'] = $instance->lang('emailsent');
