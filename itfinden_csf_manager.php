@@ -28,6 +28,9 @@ function itfinden_csf_manager_config()
 
 function itfinden_csf_manager_activate() 
 {
+	
+	logModuleCall('itfinden_csf_manager', 'activacion', 'parametro 1', 'parametro 2', 'parametro 3', '');
+
 	$sql = "CREATE TABLE IF NOT EXISTS `mod_csfmanager_config` (
 			`name` varchar(255) NOT NULL,
 			`value` text NOT NULL,
