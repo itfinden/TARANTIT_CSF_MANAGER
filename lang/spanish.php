@@ -7,7 +7,7 @@ $_ADDONLANG['title_module_firewall'] = "Seleccione Firewall a Administrar.";
 
 
 
-$_ADDONLANG['page_firewall'] = "Administrador de Acceso";
+$_ADDONLANG['page_firewall'] = "Administrador de Acceso x";
 $_ADDONLANG['page_broadcast'] = "Configuración de Transmisión";
 $_ADDONLANG['page_allowedlog'] = "Clientes Permitidos IP's Logs";
 $_ADDONLANG['page_allowkeys'] = "Clientes Permitidos Email Keys";
