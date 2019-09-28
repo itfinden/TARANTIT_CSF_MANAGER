@@ -5,7 +5,7 @@
 
 	<div style="padding: 20px; text-align: center;">
 
-		<h1 style="margin: 0;">Please select a server to manage.</h1>
+		<h1 style="margin: 0;"><?php echo $instance->lang('title_module_firewall'); ?></h1>
 		<p></p>
 		<select name="server_id" class="form-control select-inline" style="vertical-align: middle;">
 			<?php foreach($action_response['data']['servers'] as $server_id => $server_details) { ?>

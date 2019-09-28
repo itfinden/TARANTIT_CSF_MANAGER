@@ -9,8 +9,16 @@
  *
  **/
 
+
+
+
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
+
+$_ADDONLANG['title_module_firewall'] = "XX -> Please select a server to manage.";
+
+
+
 
 $_ADDONLANG['page_firewall'] = "Firewall Manager";
 $_ADDONLANG['page_broadcast'] = "Broadcast Configuration";
