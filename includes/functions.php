@@ -3,6 +3,8 @@
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
+use WHMCS\Database\Capsule;
+
 class csfmanager
 {
 	var $lang;
@@ -14,9 +16,9 @@ class csfmanager
 
 		$sql = "SELECT *
 			FROM mod_csfmanager_config";
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 
-		while($config_details = mysqli_fetch_assoc($result))
+		foreach($result => $config_details)
 		{
 			if(preg_match("/^a:\d+:{.*?}$/", $config_details['value'])) 
 			{
@@ -25,7 +27,6 @@ class csfmanager
 
 			$this->config[$config_details['name']] = $config_details['value'];
 		}
-		mysqli_free_result($result);
 
 		$this->_loadLanguage();
 	}
@@ -47,15 +48,15 @@ class csfmanager
 		if(isset($this->config[$key]))
 		{
 			$sql = "UPDATE mod_csfmanager_config
-				SET value = '" . mysqli_real_escape_string($value) . "'
-				WHERE name = '" . mysqli_real_escape_string($key) . "'";
-			$result = mysqli_query($sql);
+				SET value = '" . $value . "'
+				WHERE name = '" . $key . "'";
+			$result = sql_exec($sql);
 		}
 		else
 		{
 			$sql = "INSERT INTO mod_csfmanager_config (`name`,`value`) VALUES
-				('" . mysqli_real_escape_string($key) . "', '" . mysqli_real_escape_string($value) . "')";
-			$result = mysqli_query($sql);
+				('" . $key . "', '" . $value . "')";
+			$result = sql_exec($sql);
 		}
 	
 		$this->config[$key] = $value;
@@ -130,8 +131,7 @@ class csfmanager
 		$sql = "SELECT language
 		FROM tbladmins
 		WHERE id = '{$_SESSION['adminid']}'";
-		$result = mysqli_query($sql);
-		$admin_details = mysqli_fetch_assoc($result);
+		$admin_details = sql_select($sql)[0] ?? false;
 	
 		$default = 'english';
 		$language = strtolower($admin_details['language']);
@@ -338,8 +338,7 @@ class csfmanager
 			FROM tblemailtemplates
 			WHERE name = '{$messagename}'
 			AND language = ''";
-		$result = mysqli_query($sql);
-		$email_data = mysqli_fetch_assoc($result);
+		$email_data = sql_select($sql);
 	
 		if(!$email_data)
 		{
@@ -518,6 +517,31 @@ class csfmanager
 	{
 		return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email);
 	}
+}
+
+function sql_exec($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){
+		$stmt->execute();
+	}
+}
+
+function sql_select($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){			
+		$stmt->execute($values);
+
+		if($stmt->rowCount() > 0)
+			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	return $result ?? false;
 }
 
 ?>
