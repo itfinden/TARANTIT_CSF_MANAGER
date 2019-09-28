@@ -34,7 +34,6 @@ function itfinden_csf_manager_activate()
 			PRIMARY KEY (`name`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-		echo $sql;
 	mysqli_query($sql);
 
 	$sql = "INSERT INTO `mod_csfmanager_config` (`name`, `value`) VALUES
