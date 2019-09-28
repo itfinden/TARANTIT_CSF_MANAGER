@@ -1,19 +1,18 @@
 <?php
 
-use WHMCS\Database\Capsule;
-/*
- *
- * JetCSFManager @ whmcs module package
- * Created By Idan Ben-Ezra
- *
- * Copyrights @ Jetserver Web Hosting
- * http://jetserver.net
- *
- **/
+
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
+use WHMCS\Database\Capsule;
+
+require_once "includes/sql_funct.php";
+
+
 define('JETCSFMANAGER', true);
+define('ITFINDEN_CSF_MANAGER', true);
+
+
 if(!defined('JCSF_ROOT_PATH'))  define('JCSF_ROOT_PATH', dirname(__FILE__));
 if(!defined('WHMCS_ROOT_PATH')) define('WHMCS_ROOT_PATH', realpath(JCSF_ROOT_PATH . '/../'));
 	
@@ -1193,9 +1192,5 @@ function itfinden_csf_manager_clientarea($vars)
 	);
 }
 
-function sql_exec($sql){
-	$pdo = Capsule::connection()->getPdo();
 
-	$pdo->query($sql);
-}
 ?>
