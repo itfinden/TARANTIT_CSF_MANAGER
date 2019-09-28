@@ -21,7 +21,7 @@ $_ADDONLANG['title_module_firewall'] = "Please select a server to manage.";
 
 
 // add on version anteriores
-$_ADDONLANG['page_firewall'] = "Itfinden Firewall Manager";
+$_ADDONLANG['page_firewall'] = "ItFinden Firewall Manager";
 $_ADDONLANG['page_broadcast'] = "Broadcast Configuration";
 $_ADDONLANG['page_allowedlog'] = "Clients Allowed IP's Logs";
 $_ADDONLANG['page_allowkeys'] = "Clients Allowed Email Keys";

@@ -2,6 +2,11 @@
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
+// add on version 2.0.0
+$_ADDONLANG['title_module_firewall'] = "Seleccione Firewall a Administrar.";
+
+
+
 $_ADDONLANG['page_firewall'] = "Administrador de Acceso";
 $_ADDONLANG['page_broadcast'] = "Configuración de Transmisión";
 $_ADDONLANG['page_allowedlog'] = "Clientes Permitidos IP's Logs";
