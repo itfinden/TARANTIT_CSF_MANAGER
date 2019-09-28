@@ -15,7 +15,15 @@ function sql_exec($sql){
 
 	$stmt = $pdo->prepare($sql);
 
+	$module = 'ITFINDEN CSF MANAGER';
+	$action = 'Execute sql_exec';
+	$requestString = $sql;
+	$responseData = '';
+	$processedData = '';
+	$replaceVars = '';
+
 	if($stmt){
+		logModuleCall($module, $action, $requestString, $responseData, $processedData, $replaceVars);
 		$stmt->execute();
 	}
 }
