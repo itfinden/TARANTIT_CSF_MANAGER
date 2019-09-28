@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set("default_charset", "UTF-8");
 
-if (!defined("JETCSFMANAGER"))
+if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
 class jcsf_broadcast_setconfig extends jcsf_broadcast_default

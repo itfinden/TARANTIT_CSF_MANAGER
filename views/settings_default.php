@@ -9,7 +9,7 @@
  *
  **/
 
-if (!defined("JETCSFMANAGER"))
+if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
 class jcsf_settings_default
