@@ -29,14 +29,14 @@ function itfinden_csf_manager_config()
 function itfinden_csf_manager_activate() 
 {
 	
-	logModuleCall('itfinden_csf_manager', 'activacion', 'parametro 1', 'parametro 2', 'parametro 3', '');
+
 
 	$sql = "CREATE TABLE IF NOT EXISTS `mod_csfmanager_config` (
 			`name` varchar(255) NOT NULL,
 			`value` text NOT NULL,
 			PRIMARY KEY (`name`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
+	logModuleCall('itfinden_csf_manager', 'crear tabla mod_csfmanager_config', $sql, '', 'parametro 3', '');
 	mysqli_query($sql);
 
 	$sql = "INSERT INTO `mod_csfmanager_config` (`name`, `value`) VALUES
@@ -51,6 +51,7 @@ function itfinden_csf_manager_activate()
 		('version_check', '0'),
 		('version_new', ''),
 		('servers', '')";
+	logModuleCall('itfinden_csf_manager', 'insertar tabla mod_csfmanager_config', $sql, '', 'parametro 3', '');
 	mysqli_query($sql);
 
 	$sql = "CREATE TABLE IF NOT EXISTS `mod_csfmanager_allow` (
