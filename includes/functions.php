@@ -14,9 +14,9 @@ class csfmanager
 
 		$sql = "SELECT *
 			FROM mod_csfmanager_config";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
-		while($config_details = mysql_fetch_assoc($result))
+		while($config_details = mysqli_fetch_assoc($result))
 		{
 			if(preg_match("/^a:\d+:{.*?}$/", $config_details['value'])) 
 			{
@@ -25,7 +25,7 @@ class csfmanager
 
 			$this->config[$config_details['name']] = $config_details['value'];
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		$this->_loadLanguage();
 	}
@@ -47,15 +47,15 @@ class csfmanager
 		if(isset($this->config[$key]))
 		{
 			$sql = "UPDATE mod_csfmanager_config
-				SET value = '" . mysql_real_escape_string($value) . "'
-				WHERE name = '" . mysql_real_escape_string($key) . "'";
-			$result = mysql_query($sql);
+				SET value = '" . mysqli_real_escape_string($value) . "'
+				WHERE name = '" . mysqli_real_escape_string($key) . "'";
+			$result = mysqli_query($sql);
 		}
 		else
 		{
 			$sql = "INSERT INTO mod_csfmanager_config (`name`,`value`) VALUES
-				('" . mysql_real_escape_string($key) . "', '" . mysql_real_escape_string($value) . "')";
-			$result = mysql_query($sql);
+				('" . mysqli_real_escape_string($key) . "', '" . mysqli_real_escape_string($value) . "')";
+			$result = mysqli_query($sql);
 		}
 	
 		$this->config[$key] = $value;
@@ -130,8 +130,8 @@ class csfmanager
 		$sql = "SELECT language
 		FROM tbladmins
 		WHERE id = '{$_SESSION['adminid']}'";
-		$result = mysql_query($sql);
-		$admin_details = mysql_fetch_assoc($result);
+		$result = mysqli_query($sql);
+		$admin_details = mysqli_fetch_assoc($result);
 	
 		$default = 'english';
 		$language = strtolower($admin_details['language']);
@@ -338,8 +338,8 @@ class csfmanager
 			FROM tblemailtemplates
 			WHERE name = '{$messagename}'
 			AND language = ''";
-		$result = mysql_query($sql);
-		$email_data = mysql_fetch_assoc($result);
+		$result = mysqli_query($sql);
+		$email_data = mysqli_fetch_assoc($result);
 	
 		if(!$email_data)
 		{
