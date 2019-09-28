@@ -5,12 +5,22 @@ if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
 
-
-require_once ("/includes/sql_funct.php");
-
-
 define('JETCSFMANAGER', true);
 define('ITFINDEN_CSF_MANAGER', true);
+
+use WHMCS\Database\Capsule;
+
+function sql_exec($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){
+		$stmt->execute();
+	}
+}
+
+
 
 
 if(!defined('JCSF_ROOT_PATH'))  define('JCSF_ROOT_PATH', dirname(__FILE__));
