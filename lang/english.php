@@ -15,12 +15,13 @@
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
-$_ADDONLANG['title_module_firewall'] = "XX -> Please select a server to manage.";
+// add on version 2.0.0
+$_ADDONLANG['title_module_firewall'] = "Please select a server to manage.";
 
 
 
-
-$_ADDONLANG['page_firewall'] = "Firewall Manager";
+// add on version anteriores
+$_ADDONLANG['page_firewall'] = "Itfinden Firewall Manager";
 $_ADDONLANG['page_broadcast'] = "Broadcast Configuration";
 $_ADDONLANG['page_allowedlog'] = "Clients Allowed IP's Logs";
 $_ADDONLANG['page_allowkeys'] = "Clients Allowed Email Keys";
