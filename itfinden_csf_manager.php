@@ -1196,6 +1196,6 @@ function itfinden_csf_manager_clientarea($vars)
 function sql_exec($sql){
 	$pdo = Capsule::connection()->getPdo();
 
-	sql_exec($sql);
+	$pdo->query($sql);
 }
 ?>
