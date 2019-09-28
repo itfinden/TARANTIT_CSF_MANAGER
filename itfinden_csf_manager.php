@@ -4,7 +4,7 @@
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
-use WHMCS\Database\Capsule;
+
 
 require_once "/includes/sql_funct.php";
 
