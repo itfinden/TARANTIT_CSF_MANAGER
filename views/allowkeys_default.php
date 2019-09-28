@@ -12,6 +12,8 @@
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
+use WHMCS\Database\Capsule;
+
 class jcsf_allowkeys_default
 {
 	public function _default()
@@ -51,24 +53,22 @@ class jcsf_allowkeys_default
 			ON s.id = k.server_id
 			WHERE key_id > 0 
 			" . ($status_query ? "AND {$status_query}" : '') . "
-			" . (trim($search['clientname']) ? "AND UPPER(CONCAT_WS(' ', c.firstname, c.lastname)) LIKE UPPER('%" . mysqli_escape_string(trim($search['clientname'])) . "%')" : '') . "
+			" . (trim($search['clientname']) ? "AND UPPER(CONCAT_WS(' ', c.firstname, c.lastname)) LIKE UPPER('%" . trim($search['clientname']) . "%')" : '') . "
 			" . (intval($search['server']) ? "AND s.id = '" . intval($search['server']) . "'" : '') . "
-			" . (trim($search['recipient']) ? "AND k.key_recipient LIKE '%" . mysqli_escape_string(trim($search['recipient'])) . "%'" : '') . "
-			" . (trim($search['email']) ? "AND k.key_email LIKE '%" . mysqli_escape_string(trim($search['email'])) . "%'" : '') . "
-			" . (trim($search['key']) ? "AND k.key_hash LIKE '%" . mysqli_escape_string(trim($search['key'])) . "%'" : '') . "
+			" . (trim($search['recipient']) ? "AND k.key_recipient LIKE '%" . (trim($search['recipient']) . "%'" : '') . "
+			" . (trim($search['email']) ? "AND k.key_email LIKE '%" . (trim($search['email']) . "%'" : '') . "
+			" . (trim($search['key']) ? "AND k.key_hash LIKE '%" . (trim($search['key']) . "%'" : '') . "
 			ORDER BY k.key_id DESC";
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 
-		$output['data']['total'] = mysqli_num_rows($result);
+		$output['data']['total'] = count($result);
 		
-		$result = mysqli_query($sql . " LIMIT {$start}, {$limit}");
+		$result = sql_select($sql . " LIMIT {$start}, {$limit}");
 
-		while($key_details = mysqli_fetch_assoc($result))
-		{
+		foreach ($result as $key_details) {
 			$output['data']['list'][] = array_merge($key_details, array('key_expire_date' => date("d/m/Y H:i", $key_details['key_expire'])));
 		}
-		mysqli_free_result($result);
-		
+				
 		$output['data']['current_page'] = (($start / $limit) + 1);
 		$output['data']['total_pages'] = ceil(abs($output['data']['total'] / $limit));
 		$output['data']['start'] = $start;
@@ -79,13 +79,12 @@ class jcsf_allowkeys_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 		
-		while($server_details = mysqli_fetch_assoc($result))
+		foreach($result => $server_details)
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysqli_free_result($result);
 		
 		return $output;
 	}
@@ -101,8 +100,7 @@ class jcsf_allowkeys_default
 		$sql = "SELECT *
 			FROM mod_csfmanager_allow_keys
 			WHERE key_id = '{$id}'";
-		$result = mysqli_query($sql);
-		$key_details = mysqli_fetch_assoc($result);
+		$key_details = sql_select($sql)[0] ?? false;
 
 		if($key_details)
 		{
@@ -111,7 +109,7 @@ class jcsf_allowkeys_default
 				$sql = "UPDATE mod_csfmanager_allow_keys
 					SET key_cancelled = 1
 					WHERE key_id = '{$key_details['key_id']}'";
-				mysqli_query($sql);
+				sql_exec($sql);
 
 				$output['success'] = true;
 				$output['message'] = $instance->lang('keycancelled');
@@ -142,8 +140,7 @@ class jcsf_allowkeys_default
 		$sql = "SELECT *
 			FROM mod_csfmanager_allow_keys
 			WHERE key_id = '{$id}'";
-		$result = mysqli_query($sql);
-		$key_details = mysqli_fetch_assoc($result);
+		$key_details = sql_exec($sql)[0] ?? false;
 
 		if($key_details)
 		{
@@ -152,7 +149,7 @@ class jcsf_allowkeys_default
 				$sql = "UPDATE mod_csfmanager_allow_keys
 					SET key_cancelled = 0
 					WHERE key_id = '{$key_details['key_id']}'";
-				mysqli_query($sql);
+				sql_exec($sql);
 				
 				$output['success'] = true;
 				$output['message'] = $instance->lang('keyreactivated');
@@ -190,8 +187,7 @@ class jcsf_allowkeys_default
 			AND k.key_cancelled = 0
 			AND k.key_clicks_remained > 0
 			AND k.key_expire > '" . time() . "'";
-		$result = mysqli_query($sql);
-		$key_details = mysqli_fetch_assoc($result);
+		$key_details = sql_exec($sql)[0] ?? false;
 		
 		if($key_details)
 		{
@@ -227,6 +223,31 @@ class jcsf_allowkeys_default
 		
 		return $output;
 	}
+}
+
+function sql_exec($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){
+		$stmt->execute();
+	}
+}
+
+function sql_select($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){			
+		$stmt->execute($values);
+
+		if($stmt->rowCount() > 0)
+			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	return $result ?? false;
 }
 
 ?>

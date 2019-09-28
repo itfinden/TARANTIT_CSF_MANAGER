@@ -1,8 +1,18 @@
 <?php
-
+/*
+ *
+ * JetCSFManager @ whmcs module package
+ * Created By Idan Ben-Ezra
+ *
+ * Copyrights @ Jetserver Web Hosting
+ * http://jetserver.net
+ *
+ **/
 
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
+
+use WHMCS\Database\Capsule;
 
 class jcsf_allowedlog_default
 {
@@ -31,21 +41,20 @@ class jcsf_allowedlog_default
 			LEFT JOIN tblservers as s
 			ON s.id = a.serverid
 			WHERE a.expiration > '" . time() . "'
-			" . (trim($search['clientname']) ? "AND UPPER(CONCAT_WS(' ', c.firstname, c.lastname)) LIKE UPPER('%" . mysqli_escape_string(trim($search['clientname'])) . "%')" : '') . "
+			" . (trim($search['clientname']) ? "AND UPPER(CONCAT_WS(' ', c.firstname, c.lastname)) LIKE UPPER('%" . trim($search['clientname']) . "%')" : '') . "
 			" . (intval($search['server']) ? "AND s.id = '" . intval($search['server']) . "'" : '') . "
-			" . (trim($search['ip']) ? "AND a.ip LIKE '%" . mysqli_escape_string(trim($search['ip'])) . "%'" : '') . "
-			" . (trim($search['reason']) ? "AND a.reason LIKE '%" . mysqli_escape_string(trim($search['reason'])) . "%'" : '') . "
+			" . (trim($search['ip']) ? "AND a.ip LIKE '%" . trim($search['ip']) . "%'" : '') . "
+			" . (trim($search['reason']) ? "AND a.reason LIKE '%" . trim($search['reason']) . "%'" : '') . "
 			ORDER BY a.time DESC";
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 
-		$output['data']['total'] = mysqli_num_rows($result);
+		$output['data']['total'] = count($result);
 		
-		$result = mysqli_query($sql . " LIMIT {$start}, {$limit}");
-		while($allow_details = mysqli_fetch_assoc($result))
-		{
+		$result = sql_select($sql . " LIMIT {$start}, {$limit}");
+
+		foreach($result as $allow_details){
 			$output['data']['list'][] = array_merge($allow_details, array('time' => date("d/m/Y H:i", $allow_details['time']), 'expiration' => date("d/m/Y H:i", $allow_details['expiration'])));
 		}
-		mysqli_free_result($result);
 		
 		$output['data']['current_page'] = (($start / $limit) + 1);
 		$output['data']['total_pages'] = ceil(abs($output['data']['total'] / $limit));
@@ -58,13 +67,11 @@ class jcsf_allowedlog_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 		
-		while($server_details = mysqli_fetch_assoc($result))
-		{
+		foreach ($result as $server_details) {
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysqli_free_result($result);
 		
 		return $output;
 	}
@@ -84,8 +91,7 @@ class jcsf_allowedlog_default
 			LEFT JOIN tblservers as s
 			ON s.id = a.serverid
 			WHERE a.id = '{$id}'";
-		$result = mysqli_query($sql);
-		$allow_details = mysqli_fetch_assoc($result);
+		$allow_details = sql_select($sql)[0] ?? false;
 				
 		if(!$allow_details)
 		{
@@ -114,13 +120,38 @@ class jcsf_allowedlog_default
 		$sql = "DELETE
 			FROM mod_csfmanager_allow
 			WHERE id = '{$id}'";
-		mysqli_query($sql);
+		sql_exec($sql);
 		
 		$output['success'] = true;
 		$output['message'] = $instance->lang('allowedipremove');
 		
 		return $output;
 	}
+}
+
+function sql_exec($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){
+		$stmt->execute();
+	}
+}
+
+function sql_select($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){			
+		$stmt->execute($values);
+
+		if($stmt->rowCount() > 0)
+			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	return $result ?? false;
 }
 
 ?>

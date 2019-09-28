@@ -12,6 +12,8 @@
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
+use WHMCS\Database\Capsule;
+
 class jcsf_broadcast_send extends jcsf_broadcast_default
 {
 	public function _default()
@@ -51,13 +53,12 @@ class jcsf_broadcast_send extends jcsf_broadcast_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 		
-		while($server_details = mysqli_fetch_assoc($result))
+		foreach($result => $server_details)
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysqli_free_result($result);
 
 		if(!isset($output['data']['servers'][$server_id]))
 		{
@@ -160,6 +161,21 @@ class jcsf_broadcast_send extends jcsf_broadcast_default
 
 		return $output;
 	}
+}
+
+function sql_select($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){			
+		$stmt->execute($values);
+
+		if($stmt->rowCount() > 0)
+			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	return $result ?? false;
 }
 
 ?>

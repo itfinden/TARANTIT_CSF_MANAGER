@@ -12,6 +12,8 @@
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
+use WHMCS\Database\Capsule;
+
 class jcsf_generatekey_default
 {
 	public function _default()
@@ -28,13 +30,12 @@ class jcsf_generatekey_default
 		$sql = "SELECT *
 			FROM tblservers
 			" . (trim($instance->getConfig('servers', '')) ? "WHERE id IN (" . trim($instance->getConfig('servers', '')) . ")" : '');
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 		
-		while($server_details = mysqli_fetch_assoc($result))
+		foreach($result => $server_details)
 		{
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		mysqli_free_result($result);
 		
 		$output['data']['clients'] = array();
 		
@@ -51,13 +52,12 @@ class jcsf_generatekey_default
 			" . (trim($instance->getConfig('servers', '')) ? "AND s.id IN (" . trim($instance->getConfig('servers', '')) . ")" : '') . "
 			AND p.type IN ('hostingaccount','reselleraccount','server')
 			ORDER BY c.firstname ASC, c.lastname ASC, c.id ASC";
-		$result = mysqli_query($sql);
+		$result = sql_select($sql);
 		
-		while($client_details = mysqli_fetch_assoc($result))
+		foreach($result => $client_details)
 		{                     
 			$output['data']['clients'][$client_details['id']] = $client_details;
 		}
-		mysqli_free_result($result);
 		
 		return $output;
 	}
@@ -100,7 +100,7 @@ class jcsf_generatekey_default
 	
 				$sql = "INSERT INTO mod_csfmanager_allow_keys (`user_id`,`server_id`,`product_id`,`key_hash`,`key_recipient`,`key_email`,`key_clicks_remained`,`key_expire`) VALUES
 					('{$client_id}','{$output['data']['clients'][$client_id]['server_id']}','{$output['data']['clients'][$client_id]['hosting_id']}','{$hashkey}','{$output['data']['generate']['recipient']}','{$output['data']['generate']['email']}',{$valid_clicks},'" . (time() + (60 * 60 * 24 * $valid_days)) . "')";
-				mysqli_query($sql);
+				sql_exec($sql);
 	
 				$output['success'] = true;
 				$output['message'] = $instance->lang('emailsent');
@@ -123,6 +123,31 @@ class jcsf_generatekey_default
 			
 		return $output;
 	}
+}
+
+function sql_exec($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){
+		$stmt->execute();
+	}
+}
+
+function sql_select($sql){
+	$pdo = Capsule::connection()->getPdo();
+
+	$stmt = $pdo->prepare($sql);
+
+	if($stmt){			
+		$stmt->execute($values);
+
+		if($stmt->rowCount() > 0)
+			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	return $result ?? false;
 }
 
 ?>
