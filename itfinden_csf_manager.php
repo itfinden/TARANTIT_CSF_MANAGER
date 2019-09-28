@@ -18,10 +18,10 @@ if(!defined('WHMCS_ROOT_PATH')) define('WHMCS_ROOT_PATH', realpath(JCSF_ROOT_PAT
 function itfinden_csf_manager_config() 
 {
 	return array(
-		'name' 		=> 'Jetserver CSF Manager',
+		'name' 		=> 'ITFINDEN CSF Manager',
 		'description' 	=> 'Manage your servers ConfigServer Firewall & Security',
-		'version' 	=> '1.1.4',
-		'author' 	=> 'Idan Ben-Ezra',
+		'version' 	=> '1.2.0',
+		'author' 	=> 'ITFINDEN y Jorge Arana',
 		'language' 	=> 'english',
 	);
 }
