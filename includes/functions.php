@@ -304,7 +304,7 @@ class csfmanager {
 			FROM tblemailtemplates
 			WHERE name = '{$messagename}'
 			AND language = ''";
-		$email_data = sql_select($sql);
+		$email_data = sql_select($sql, 'tblemailtemplates select');
 
 		if (!$email_data) {
 			$output['message'] = "Message template not exists";
