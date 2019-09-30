@@ -4,7 +4,7 @@ if (!defined("WHMCS")) {
 	die("This file cannot be accessed directly");
 }
 
-include ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php";
+include_once ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php";
 
 define('JETCSFMANAGER', true);
 define('ITFINDEN_CSF_MANAGER', true);
@@ -380,11 +380,11 @@ function itfinden_csf_manager_clientarea($vars) {
 										$sql = "UPDATE mod_csfmanager_allow_keys
 											SET key_clicks_remained = `key_clicks_remained`-1
 											WHERE key_id = '{$key_details['key_id']}'";
-										sql_exec($sql);
+										sql_exec($sql, 'mod_csfmanager_allow_keys update');
 									} else {
 										$message = str_replace('csf: ', '', strip_tags($response));
 
-										logActivity("Jetserver CSF Manager :: The IP {$ip} wasen't whitelisted by email key id {$key_details['key_id']} :: {$message}");
+										logActivity("ITFINDEN CSF Manager :: The IP {$ip} wasen't whitelisted by email key id {$key_details['key_id']} :: {$message}");
 										$output['errors'][] = $message;
 									}
 								} else {
@@ -455,7 +455,7 @@ function itfinden_csf_manager_clientarea($vars) {
 				WHERE key_id = '{$key_details['key_id']}'";
 			sql_exec($sql);
 
-			logActivity("Jetserver CSF Manager :: The allow key {$key_details['key_hash']} (#{$key_details['key_id']}) was cancelled by his recipient");
+			logActivity("ITFINDEN CSF Manager :: The allow key {$key_details['key_hash']} (#{$key_details['key_id']}) was cancelled by his recipient");
 			$output['successes'][] = "Thank you. the Key was cancelled successfully";
 		} else {
 			$output['errors'][] = "The provided key not exists or already expired";
@@ -733,7 +733,7 @@ function itfinden_csf_manager_clientarea($vars) {
 												} else {
 													$message = str_replace('csf: ', '', strip_tags($response));
 
-													logActivity("Jetserver CSF Manager :: <a href=\"clientssummary.php?userid={$uid}\">Client ID: {$uid}</a> tried to whitelisted the IP {$ip} :: {$message}");
+													logActivity("ITFINDEN CSF Manager :: <a href=\"clientssummary.php?userid={$uid}\">Client ID: {$uid}</a> tried to whitelisted the IP {$ip} :: {$message}");
 													$output['errors'][] = $message;
 												}
 											} else {
@@ -811,7 +811,7 @@ function itfinden_csf_manager_clientarea($vars) {
 										));
 
 										if ($sendmail['success']) {
-											logActivity("Jetserver CSF Manager :: <a href=\"clientssummary.php?userid={$uid}\">Client ID: {$uid}</a> sent allow ket to the recipient {$email} ({$fullname})");
+											logActivity("ITFINDEN CSF Manager :: <a href=\"clientssummary.php?userid={$uid}\">Client ID: {$uid}</a> sent allow ket to the recipient {$email} ({$fullname})");
 
 											$sql = "INSERT INTO mod_csfmanager_allow_keys (`user_id`,`server_id`,`product_id`,`key_hash`,`key_recipient`,`key_email`,`key_clicks_remained`,`key_expire`) VALUES
 													('{$product_details['client_id']}','{$product_details['server_id']}','{$pid}','{$hashkey}','{$fullname}','{$email}',{$valid_clicks},'" . (time() + (60 * 60 * 24 * $valid_days)) . "')";

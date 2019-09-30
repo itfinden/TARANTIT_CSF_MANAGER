@@ -1,5 +1,7 @@
 <?php
 
+include_once ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php";
+
 if (!defined("WHMCS")) {
 	die("This file cannot be accessed directly");
 }
