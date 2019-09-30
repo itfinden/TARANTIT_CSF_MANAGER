@@ -4,7 +4,6 @@ use WHMCS\Database\Capsule;
 function sql_exec($sql, $action = '') {
 
 	$module = 'ITFINDEN_CSF_MANAGER';
-	$action = '';
 	$requestString = $sql;
 	$responseData = '';
 	$processedData = '';
