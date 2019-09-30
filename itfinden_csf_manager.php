@@ -936,7 +936,7 @@ function itfinden_csf_manager_clientarea($vars) {
 								$output['allowedips'][$ip_details['id']]['time'] = date("d/m/Y H:i", $ip_details['time']);
 								$output['allowedips'][$ip_details['id']]['expiration'] = date("d/m/Y H:i", $ip_details['expiration']);
 							}
-							mysql_free_result($result);
+							#mysql_free_result($result);
 
 							$output['allowkeys'] = array();
 
@@ -954,7 +954,7 @@ function itfinden_csf_manager_clientarea($vars) {
 
 								$output['allowkeys'][$key_details['key_id']]['key_expired'] = ($key_details['key_expire'] <= time());
 							}
-							mysql_free_result($result);
+							#mysql_free_result($result);
 
 							break;
 						}
@@ -997,7 +997,7 @@ function itfinden_csf_manager_clientarea($vars) {
 			while ($product_details = mysql_fetch_assoc($result)) {
 				$output['services'][] = $product_details;
 			}
-			mysql_free_result($result);
+			#mysql_free_result($result);
 
 			$tplfile = 'csfmanagerproducts';
 		}
