@@ -4,8 +4,6 @@ if (!defined("WHMCS")) {
 	die("This file cannot be accessed directly");
 }
 
-include ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php";
-
 class csfmanager {
 	var $lang;
 	private $config = array();

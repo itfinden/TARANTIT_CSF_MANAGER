@@ -4,6 +4,8 @@ if (!defined("WHMCS")) {
 	die("This file cannot be accessed directly");
 }
 
+include ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php";
+
 define('JETCSFMANAGER', true);
 define('ITFINDEN_CSF_MANAGER', true);
 
