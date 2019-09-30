@@ -32,8 +32,6 @@ add_hook('ClientAreaPage', 1, function ($vars) {
 				'uri' => 'index.php?m=csfmanager&id=' . $vars['serviceid'],
 			));
 		}
-	} else {
-		var_dump($vars);
 	}
 
 });
