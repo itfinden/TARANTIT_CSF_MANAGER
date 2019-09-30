@@ -31,7 +31,7 @@ class jcsf_firewall_default {
 		while ($server_details = mysql_fetch_assoc($result)) {
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		return $output;
 	}

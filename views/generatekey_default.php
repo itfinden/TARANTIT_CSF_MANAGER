@@ -32,7 +32,7 @@ class jcsf_generatekey_default {
 		while ($server_details = mysql_fetch_assoc($result)) {
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		$output['data']['clients'] = array();
 
@@ -54,7 +54,7 @@ class jcsf_generatekey_default {
 		while ($client_details = mysql_fetch_assoc($result)) {
 			$output['data']['clients'][$client_details['id']] = $client_details;
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		return $output;
 	}
