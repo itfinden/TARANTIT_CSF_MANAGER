@@ -32,11 +32,12 @@ function sql_select($sql, $action = '') {
 	$stmt = $pdo->prepare($sql);
 	if ($stmt) {
 		$stmt->execute($values);
-		logModuleCall($module, $action, $requestString, $responseData, $processedData, $replaceVars);
+
 		if ($stmt->rowCount() > 0) {
 
 			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
+		logModuleCall($module, $action, $requestString, $result ?? 'no result', $processedData, $replaceVars);
 
 	}
 
