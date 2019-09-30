@@ -22,6 +22,8 @@ add_hook('ClientAreaPage', 1, function ($vars) {
 
 		$allowed_servers = explode(',', $instance->getConfig('servers'));
 
+		echo 'xplo';
+
 		if (in_array($vars['serverdata']['id'], $allowed_servers)) {
 			$menu = Menu::PrimarySidebar();
 
