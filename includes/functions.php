@@ -117,7 +117,7 @@ class csfmanager {
 		$sql = "SELECT language
 		FROM tbladmins
 		WHERE id = '{$_SESSION['adminid']}'";
-		$admin_details = sql_select($sql)[0] ?? false;
+		$admin_details = sql_select($sql);
 
 		$default = 'english';
 		$language = strtolower($admin_details['language']);

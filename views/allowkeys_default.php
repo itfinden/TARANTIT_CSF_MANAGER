@@ -100,7 +100,7 @@ class jcsf_allowkeys_default
 		$sql = "SELECT *
 			FROM mod_csfmanager_allow_keys
 			WHERE key_id = '{$id}'";
-		$key_details = sql_select($sql)[0] ?? false;
+		$key_details = sql_select($sql);
 
 		if($key_details)
 		{
@@ -140,7 +140,7 @@ class jcsf_allowkeys_default
 		$sql = "SELECT *
 			FROM mod_csfmanager_allow_keys
 			WHERE key_id = '{$id}'";
-		$key_details = sql_exec($sql)[0] ?? false;
+		$key_details = sql_exec($sql);
 
 		if($key_details)
 		{
@@ -187,7 +187,7 @@ class jcsf_allowkeys_default
 			AND k.key_cancelled = 0
 			AND k.key_clicks_remained > 0
 			AND k.key_expire > '" . time() . "'";
-		$key_details = sql_exec($sql)[0] ?? false;
+		$key_details = sql_exec($sql);
 		
 		if($key_details)
 		{
@@ -225,29 +225,5 @@ class jcsf_allowkeys_default
 	}
 }
 
-function sql_exec($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){
-		$stmt->execute();
-	}
-}
-
-function sql_select($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){			
-		$stmt->execute($values);
-
-		if($stmt->rowCount() > 0)
-			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	return $result ?? false;
-}
 
 ?>
