@@ -33,8 +33,9 @@ add_hook('ClientAreaPage', 1, function ($vars) {
 			));
 		}
 	} else {
-		echo ' action = ' . $vars['action'] . '<-->' . $vars['serviceid'] . '<-->' . $vars['rawstatus'] . ' <--';
+		var_dump($vars);
 	}
+
 });
 
 ?>
