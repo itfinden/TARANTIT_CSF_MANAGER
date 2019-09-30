@@ -33,7 +33,7 @@ add_hook('ClientAreaPage', 1, function ($vars) {
 			));
 		}
 	} else {
-		echo 'algo paso';
+		echo ' action = ' . $vars['action'] . '<-->' . $vars['serviceid'] . '<-->' . $vars['rawstatus'] . ' <--';
 	}
 });
 
