@@ -19,15 +19,22 @@ function sql_exec($sql, $action = '') {
 	}
 }
 
-function sql_select($sql) {
+function sql_select($sql, $action = '') {
+
+	$module = 'ITFINDEN_CSF_MANAGER';
+	$requestString = $sql;
+	$responseData = '';
+	$processedData = '';
+	$replaceVars = '';
+
 	$pdo = Capsule::connection()->getPdo();
 
 	$stmt = $pdo->prepare($sql);
-
 	if ($stmt) {
 		$stmt->execute($values);
-
+		logModuleCall($module, $action, $requestString, $responseData, $processedData, $replaceVars);
 		if ($stmt->rowCount() > 0) {
+
 			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 
