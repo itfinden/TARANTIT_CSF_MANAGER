@@ -1,30 +1,40 @@
 <?php
 use WHMCS\Database\Capsule;
 
-function sql_exec($sql){
+function sql_exec($sql, $action = '') {
+
+	$module = 'ITFINDEN_CSF_MANAGER';
+	$action = '';
+	$requestString = $sql;
+	$responseData = '';
+	$processedData = '';
+	$replaceVars = '';
+
 	$pdo = Capsule::connection()->getPdo();
 
 	$stmt = $pdo->prepare($sql);
 
-	if($stmt){
+	if ($stmt) {
+		logModuleCall($module, $action, $requestString, $responseData, $processedData, $replaceVars);
 		$stmt->execute();
 	}
 }
 
-function sql_select($sql){
+function sql_select($sql) {
 	$pdo = Capsule::connection()->getPdo();
 
 	$stmt = $pdo->prepare($sql);
 
-	if($stmt){			
+	if ($stmt) {
 		$stmt->execute($values);
 
-		if($stmt->rowCount() > 0)
+		if ($stmt->rowCount() > 0) {
 			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+
 	}
 
 	return $result ?? [];
 }
-
 
 ?>
