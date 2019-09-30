@@ -15,26 +15,26 @@ add_hook("DailyCronJob", 1, function () {
 
 add_hook('ClientAreaPage', 1, function ($vars) {
 
-	if ($vars['action'] == 'productdetails' && $vars['serviceid'] && $vars['rawstatus'] == 'active') {
-		require_once (dirname(__FILE__) . '/includes/functions.php');
+	#if ($vars['action'] == 'productdetails' && $vars['serviceid'] && $vars['rawstatus'] == 'active') {
+	require_once (dirname(__FILE__) . '/includes/functions.php');
 
-		$instance = csfmanager::getInstance();
+	$instance = csfmanager::getInstance();
 
-		$allowed_servers = explode(',', $instance->getConfig('servers'));
+	$allowed_servers = explode(',', $instance->getConfig('servers'));
 
-		echo 'xplo';
+	echo 'xplo';
 
-		if (in_array($vars['serverdata']['id'], $allowed_servers)) {
-			$menu = Menu::PrimarySidebar();
+	if (in_array($vars['serverdata']['id'], $allowed_servers)) {
+		$menu = Menu::PrimarySidebar();
 
-			$overviewMenu = $menu->getChild('Service Details Actions');
+		$overviewMenu = $menu->getChild('Service Details Actions');
 
-			$overviewMenu->addChild('Firewall', array(
-				'label' => 'Manage Firewall',
-				'uri' => 'index.php?m=csfmanager&id=' . $vars['serviceid'],
-			));
-		}
+		$overviewMenu->addChild('Firewall', array(
+			'label' => 'Manage Firewall',
+			'uri' => 'index.php?m=csfmanager&id=' . $vars['serviceid'],
+		));
 	}
+	#}
 
 });
 
