@@ -3,7 +3,10 @@
 if (!defined("WHMCS"))
 	die("This file cannot be accessed directly");
 
-use WHMCS\Database\Capsule;
+
+
+include(ROOTDIR . "/modules/addons/itfinden_csf_manager/libs/itfinden_functions.php");
+
 
 class csfmanager
 {
@@ -519,29 +522,5 @@ class csfmanager
 	}
 }
 
-function sql_exec($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){
-		$stmt->execute();
-	}
-}
-
-function sql_select($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){			
-		$stmt->execute($values);
-
-		if($stmt->rowCount() > 0)
-			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	return $result ?? false;
-}
 
 ?>
