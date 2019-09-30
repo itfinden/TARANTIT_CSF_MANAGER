@@ -41,7 +41,7 @@ function sql_select($sql, $action = '') {
 
 	}
 
-	return $result ?? [];
+	return $result[0] ?? [];
 }
 
 ?>
