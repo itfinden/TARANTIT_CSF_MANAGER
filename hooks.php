@@ -15,9 +15,6 @@ add_hook("DailyCronJob", 1, function () {
 
 add_hook('ClientAreaPage', 1, function ($vars) {
 
-	echo 'xplo';
-	die();
-
 	if ($vars['action'] == 'productdetails' && $vars['serviceid'] && $vars['rawstatus'] == 'active') {
 		require_once (dirname(__FILE__) . '/includes/functions.php');
 
