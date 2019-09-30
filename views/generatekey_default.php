@@ -12,7 +12,7 @@
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
-use WHMCS\Database\Capsule;
+
 
 class jcsf_generatekey_default
 {
@@ -54,7 +54,7 @@ class jcsf_generatekey_default
 			ORDER BY c.firstname ASC, c.lastname ASC, c.id ASC";
 		$result = sql_select($sql);
 		
-		foreach($result => $client_details)
+		foreach($result as $client_details)
 		{                     
 			$output['data']['clients'][$client_details['id']] = $client_details;
 		}
@@ -125,29 +125,5 @@ class jcsf_generatekey_default
 	}
 }
 
-function sql_exec($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){
-		$stmt->execute();
-	}
-}
-
-function sql_select($sql){
-	$pdo = Capsule::connection()->getPdo();
-
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){			
-		$stmt->execute($values);
-
-		if($stmt->rowCount() > 0)
-			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	return $result ?? false;
-}
 
 ?>

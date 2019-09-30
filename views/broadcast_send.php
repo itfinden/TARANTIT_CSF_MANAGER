@@ -12,7 +12,6 @@
 if (!defined("ITFINDEN_CSF_MANAGER"))
 	die("This file cannot be accessed directly");
 
-use WHMCS\Database\Capsule;
 
 class jcsf_broadcast_send extends jcsf_broadcast_default
 {
@@ -163,19 +162,6 @@ class jcsf_broadcast_send extends jcsf_broadcast_default
 	}
 }
 
-function sql_select($sql){
-	$pdo = Capsule::connection()->getPdo();
 
-	$stmt = $pdo->prepare($sql);
-
-	if($stmt){			
-		$stmt->execute($values);
-
-		if($stmt->rowCount() > 0)
-			$result[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	return $result ?? false;
-}
 
 ?>
