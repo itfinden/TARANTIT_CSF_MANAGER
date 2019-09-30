@@ -21,6 +21,7 @@ class csfmanager
 			FROM mod_csfmanager_config";
 		$result = sql_select($sql);
 
+		print_r($result);
 
 		foreach($result => $config_details)
 		{
