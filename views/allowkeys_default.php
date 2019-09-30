@@ -62,7 +62,7 @@ class jcsf_allowkeys_default {
 		while ($key_details = mysql_fetch_assoc($result)) {
 			$output['data']['list'][] = array_merge($key_details, array('key_expire_date' => date("d/m/Y H:i", $key_details['key_expire'])));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		$output['data']['current_page'] = (($start / $limit) + 1);
 		$output['data']['total_pages'] = ceil(abs($output['data']['total'] / $limit));
@@ -79,7 +79,7 @@ class jcsf_allowkeys_default {
 		while ($server_details = mysql_fetch_assoc($result)) {
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		return $output;
 	}

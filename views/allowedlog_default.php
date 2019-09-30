@@ -51,7 +51,7 @@ class jcsf_allowedlog_default {
 		while ($allow_details = mysql_fetch_assoc($result)) {
 			$output['data']['list'][] = array_merge($allow_details, array('time' => date("d/m/Y H:i", $allow_details['time']), 'expiration' => date("d/m/Y H:i", $allow_details['expiration'])));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		$output['data']['current_page'] = (($start / $limit) + 1);
 		$output['data']['total_pages'] = ceil(abs($output['data']['total'] / $limit));
@@ -69,7 +69,7 @@ class jcsf_allowedlog_default {
 		while ($server_details = mysql_fetch_assoc($result)) {
 			$output['data']['servers'][$server_details['id']] = array_merge($server_details, array('password' => decrypt($server_details['password'], $cc_encryption_hash)));
 		}
-		#mysql_free_result($result);
+		mysql_free_result($result);
 
 		return $output;
 	}
