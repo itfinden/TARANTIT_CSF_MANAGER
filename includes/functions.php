@@ -21,6 +21,7 @@ class csfmanager
 			FROM mod_csfmanager_config";
 		$result = sql_select($sql);
 
+
 		foreach($result => $config_details)
 		{
 			if(preg_match("/^a:\d+:{.*?}$/", $config_details['value'])) 
