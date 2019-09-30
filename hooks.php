@@ -24,7 +24,6 @@ add_hook('ClientAreaPage', 1, function ($vars) {
 
 	if (in_array($vars['serverdata']['id'], $allowed_servers)) {
 		$menu = Menu::PrimarySidebar();
-		echo 'xplo';
 		$overviewMenu = $menu->getChild('Service Details Actions');
 
 		$overviewMenu->addChild('Firewall', array(
